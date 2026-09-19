@@ -1,0 +1,133 @@
+<div class="max-w-5xl mx-auto px-4 py-25">
+  <div class="mb-6">
+    <button
+      routerLink="/menu"
+      class="inline-flex items-center gap-2 bg-slate-900 hover:bg-orange-500 text-white font-semibold px-5 py-3 rounded-xl shadow-md transition-all duration-300"
+    >
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Back to Menu</span>
+    </button>
+  </div>
+  @if (mealdetails && mealdetails.id) {
+    <!-- Card Container -->
+    <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+      <!-- 1. Hero Image Section -->
+      <div class="relative h-80 sm:h-96 w-full bg-slate-900">
+        <img
+          [src]="mealdetails.image"
+          [alt]="mealdetails.name"
+          class="w-full h-full object-cover opacity-90"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-black/20"
+        ></div>
+
+        <!-- Badges on Image -->
+        <div class="absolute top-4 left-4 flex gap-2">
+          <span
+            class="bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg"
+          >
+            {{ mealdetails.cuisine }} Cuisine
+          </span>
+          <span
+            class="bg-slate-900/80 backdrop-blur-md text-yellow-400 text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shadow-lg"
+          >
+            <i class="fa-solid fa-star"></i>
+            <span class="text-white">{{ mealdetails.rating }}</span>
+          </span>
+        </div>
+
+        <!-- Title over image -->
+        <div class="absolute bottom-6 left-6 right-6 text-white">
+          <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2">
+            {{ mealdetails.name }}
+          </h1>
+          <div class="flex flex-wrap gap-2">
+            @for (tag of mealdetails.tags; track tag) {
+              <span class="text-xs bg-white/20 backdrop-blur-md text-white px-2.5 py-1 rounded-md">
+                #{{ tag }}
+              </span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Quick Info Bar -->
+      <div
+        class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 bg-orange-50/50 border-b border-orange-100 text-center"
+      >
+        <div class="flex flex-col items-center">
+          <span class="text-xs text-slate-500 uppercase font-semibold">Prep Time</span>
+          <span class="text-slate-800 font-bold mt-1 flex items-center gap-1">
+            <i class="fa-regular fa-clock text-orange-500"></i>
+            {{ mealdetails.prepTimeMinutes }} mins
+          </span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="text-xs text-slate-500 uppercase font-semibold">Cook Time</span>
+          <span class="text-slate-800 font-bold mt-1 flex items-center gap-1">
+            <i class="fa-solid fa-fire-burner text-orange-500"></i>
+            {{ mealdetails.cookTimeMinutes }} mins
+          </span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="text-xs text-slate-500 uppercase font-semibold">Calories</span>
+          <span class="text-slate-800 font-bold mt-1 flex items-center gap-1">
+            <i class="fa-solid fa-bolt text-orange-500"></i>
+            {{ mealdetails.caloriesPerServing }} kcal
+          </span>
+        </div>
+        <div class="flex flex-col items-center">
+          <span class="text-xs text-slate-500 uppercase font-semibold">Difficulty</span>
+          <span class="text-slate-800 font-bold mt-1 flex items-center gap-1">
+            <i class="fa-solid fa-layer-group text-orange-500"></i>
+            {{ mealdetails.difficulty }}
+          </span>
+        </div>
+      </div>
+
+      <!-- 3. Main Content Grid -->
+      <div class="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Left Column: Ingredients -->
+        <div class="lg:col-span-1 bg-slate-50 p-6 rounded-2xl border border-slate-100">
+          <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-basket-shopping text-orange-500"></i>
+            <span>Ingredients</span>
+          </h2>
+          <ul class="space-y-3">
+            @for (ingredient of mealdetails.ingredients; track ingredient) {
+              <li class="flex items-start gap-3 text-sm text-slate-700">
+                <i class="fa-solid fa-circle-check text-orange-500 mt-1 text-xs"></i>
+                <span>{{ ingredient }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <!-- Right Column: Instructions -->
+        <div class="lg:col-span-2">
+          <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-orange-500"></i>
+            <span>Instructions</span>
+          </h2>
+          <ol class="space-y-4">
+            @for (step of mealdetails.instructions; track $index; let i = $index) {
+              <li
+                class="flex gap-4 p-4 rounded-xl bg-white border border-slate-100 shadow-sm hover:border-orange-200 transition-colors"
+              >
+                <span
+                  class="flex-shrink-0 w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex items-center justify-center text-sm"
+                >
+                  {{ i + 1 }}
+                </span>
+                <p class="text-slate-700 text-sm leading-relaxed pt-1">
+                  {{ step }}
+                </p>
+              </li>
+            }
+          </ol>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,142 @@
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <!-- Header -->
+  <header class="text-center mb-10">
+    <h2 class="text-3xl font-bold text-slate-800 flex items-center justify-center gap-3">
+      <i class="fa-solid fa-utensils text-orange-500"></i>
+      <span>Recipe & Menu List</span>
+    </h2>
+    <p class="text-maincolor mt-2">
+      Explore over 30 delicious meals from various cuisines around the world
+    </p>
+    <form class="max-w-md mx-auto">
+      <label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only"
+        >Search</label
+      >
+      <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+          <svg
+            class="w-4 h-4 text-body"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-width="2"
+              d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+            />
+          </svg>
+        </div>
+        <input
+          type="search"
+          name="search"
+          [(ngModel)]="searchWord"
+          id="search"
+          class="block w-full p-3 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+          placeholder="Search"
+          required
+        />
+        <button
+          type="button"
+          class="absolute end-1.5 bottom-1.5 text-black bg-red-800 hover:bg-yellow-500 box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none"
+        >
+          Search
+        </button>
+      </div>
+    </form>
+  </header>
+
+  <!-- Recipes Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    @for (item of menulist | search: searchWord; track item.id) {
+      <div
+        class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group"
+      >
+        <!-- Image & Badges -->
+        <div class="relative h-48 w-full overflow-hidden bg-slate-100">
+          <img
+            [src]="item.image"
+            [alt]="item.name"
+            loading="lazy"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <!-- Cuisine Badge -->
+          <span
+            class="absolute top-3 right-3 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md"
+          >
+            {{ item.cuisine }}
+          </span>
+          <!-- Rating Badge -->
+          <span
+            class="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-sm text-yellow-400 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1"
+          >
+            <i class="fa-solid fa-star"></i>
+            <span class="text-white">{{ item.rating }}</span>
+          </span>
+        </div>
+
+        <!-- Body -->
+        <div class="p-5 flex-1 flex flex-col justify-between">
+          <div>
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1 mb-2">
+              @for (tag of item.tags.slice(0, 2); track tag) {
+                <span
+                  class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-medium"
+                >
+                  #{{ tag }}
+                </span>
+              }
+            </div>
+
+            <!-- Recipe Title -->
+            <h3
+              class="text-lg font-bold text-slate-800 mb-2 line-clamp-1 group-hover:text-orange-500 transition-colors"
+            >
+              {{ item.name }}
+            </h3>
+
+            <!-- Details: Prep time & Difficulty -->
+            <div
+              class="flex items-center justify-between text-xs text-slate-500 mt-3 pt-3 border-t border-slate-100"
+            >
+              <span class="flex items-center gap-1">
+                <i class="fa-regular fa-clock text-orange-400"></i>
+                {{ item.prepTimeMinutes + item.cookTimeMinutes }} mins
+              </span>
+              <span class="flex items-center gap-1">
+                <i class="fa-solid fa-fire text-orange-400"></i>
+                {{ item.caloriesPerServing }} kcal
+              </span>
+              <span
+                class="px-2 py-0.5 rounded text-[11px] font-semibold"
+                [class]="
+                  item.difficulty === 'Easy'
+                    ? 'bg-emerald-50 text-emerald-600'
+                    : 'bg-amber-50 text-amber-600'
+                "
+              >
+                {{ item.difficulty }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="p-4 pt-0 bg-white">
+          <button
+            [routerLink]="['/details', item.id]"
+            class="w-full bg-slate-900 hover:bg-orange-500 active:scale-[0.98] text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 text-sm"
+          >
+            <i class="fa-solid fa-book-open"></i>
+            <span>View Recipe</span>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>
